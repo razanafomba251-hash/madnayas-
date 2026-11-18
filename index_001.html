@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vente Crypto → Mobile Money Madagascar</title>
+<style>
+:root{--bg:#0f172a;--card:#1e293b;--border:#334155;--text:#f1f5f9;--muted:#94a3b8;--primary:#22c55e;--primary-hover:#16a34a;--danger:#ef4444;--orange:#f97316;--mvola:#eab308;--airtel:#ef4444;--input-bg:#0f172a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+.container{max-width:920px;margin:0 auto;padding:20px 16px 40px}
+header{text-align:center;margin-bottom:28px;padding-top:12px}
+header .logo{width:64px;height:64px;margin:0 auto 12px;display:block}
+header h1{font-size:1.6rem;font-weight:700;margin-bottom:6px}
+header p{color:var(--muted);font-size:.95rem}
+.tabs{display:flex;gap:8px;margin-bottom:24px;background:var(--card);padding:6px;border-radius:12px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:12px;border:none;border-radius:8px;background:transparent;color:var(--muted);font-size:.95rem;font-weight:600;cursor:pointer}
+.tab-btn.active{background:var(--primary);color:#fff}
+.tab-btn:hover:not(.active){background:#334155;color:var(--text)}
+.panel{display:none}.panel.active{display:block}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px}
+.card h2{font-size:1.15rem;margin-bottom:18px}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:.85rem;color:var(--muted);margin-bottom:6px;font-weight:500}
+input,select{width:100%;padding:12px 14px;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:1rem;outline:none}
+input:focus,select:focus{border-color:var(--primary)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.rate-box{background:#14532d33;border:1px solid #22c55e55;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
+.rate-box strong{color:var(--primary);font-size:1.1rem}
+.result-box{background:#1e3a5f33;border:1px solid #3b82f655;border-radius:10px;padding:14px 16px;margin:16px 0;text-align:center}
+.result-box .amount{font-size:1.5rem;font-weight:700;color:#60a5fa}
+.result-box .label{font-size:.85rem;color:var(--muted);margin-top:4px}
+.operators{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.op-btn{padding:14px 8px;border:2px solid var(--border);border-radius:12px;background:var(--input-bg);color:var(--text);font-weight:600;cursor:pointer;text-align:center;font-size:.9rem}
+.op-btn.selected{border-color:var(--primary);background:#14532d44}
+.op-btn.orange.selected{border-color:var(--orange);background:#f9731622}
+.op-btn.mvola.selected{border-color:var(--mvola);background:#eab30822}
+.op-btn.airtel.selected{border-color:var(--airtel);background:#ef444422}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:8px}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger);padding:8px 14px;font-size:.85rem;width:auto}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.btn-secondary{background:#334155;color:var(--text)}
+.btn-secondary:hover{background:#475569}
+.orders-list{display:flex;flex-direction:column;gap:14px}
+.order-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.order-card.done{opacity:.65;border-color:#22c55e55}
+.order-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.order-id{font-size:.8rem;color:var(--muted)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge-pending{background:#f59e0b33;color:#fbbf24}
+.badge-done{background:#22c55e33;color:#4ade80}
+.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;font-size:.9rem}
+@media(max-width:500px){.order-grid{grid-template-columns:1fr}}
+.order-grid .label{color:var(--muted);font-size:.78rem}
+.order-grid .value{font-weight:600}
+.order-actions{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.success-msg{background:#14532d;border:1px solid #22c55e;color:#bbf7d0;padding:14px;border-radius:10px;margin-bottom:16px;text-align:center;display:none}
+.admin-login{max-width:360px;margin:40px auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.stat-card .num{font-size:1.4rem;font-weight:700;color:var(--primary)}
+.stat-card .txt{font-size:.8rem;color:var(--muted)}
+footer{text-align:center;margin-top:30px;font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<svg class="logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<circle cx="32" cy="32" r="30" fill="#22c55e"/>
+<path d="M32 14c-6 0-11 5-11 11 0 4 2 7 5 9l-1 4h14l-1-4c3-2 5-5 5-9 0-6-5-11-11-11z" fill="#0f172a"/>
+<rect x="22" y="40" width="20" height="12" rx="3" fill="#0f172a"/>
+<path d="M18 52h28" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+</svg>
+<h1>Vente Crypto → Mobile Money</h1>
+<p>USDT • USDC • BNB • Bitcoin → Orange / MVola / Airtel</p>
+</header>
+<div class="tabs">
+<button class="tab-btn active" onclick="showTab('client')">Client</button>
+<button class="tab-btn" onclick="showTab('admin')">Admin</button>
+</div>
+<div id="client" class="panel active">
+<div class="success-msg" id="successMsg">✅ Demande envoyée avec succès ! L’admin va traiter votre demande.</div>
+<div class="card">
+<h2>📝 Nouvelle demande de vente</h2>
+<div class="rate-box"><span>Taux actuel</span><strong>1 $ = 4 100 Ar</strong></div>
+<div class="form-group"><label>Crypto à vendre</label><select id="crypto" onchange="updateNetworks();calcFromCrypto()"><option value="USDT">USDT (Tether)</option><option value="USDC">USDC</option><option value="BNB">BNB</option><option value="BTC">Bitcoin (BTC)</option></select></div>
+<div class="form-group"><label>Réseau</label><select id="network"><option value="TRX">TRX (Tron)</option><option value="BNB">BNB (BSC)</option><option value="ETH">ETH (Ethereum)</option></select></div>
+<div class="row">
+<div class="form-group"><label>Nombre de crypto</label><input type="number" id="amountCrypto" placeholder="Ex: 50" min="0" step="any" oninput="calcFromCrypto()"></div>
+<div class="form-group"><label>Équivalent en $ (USD)</label><input type="text" id="amountUsd" placeholder="—" readonly style="opacity:.85"></div>
+</div>
+<div class="result-box"><div class="amount" id="arAmount">0 Ar</div><div class="label">Vous recevrez environ</div></div>
+<div class="form-group"><label>Nom du propriétaire du numéro</label><input type="text" id="nom" placeholder="Ex: Jean Rakoto"></div>
+<div class="form-group"><label>Numéro de téléphone (où recevoir l’argent)</label><input type="tel" id="telephone" placeholder="Ex: 034 12 345 67"></div>
+<div class="form-group"><label>Réseau mobile pour recevoir</label><div class="operators"><button type="button" class="op-btn orange" data-op="Orange" onclick="selectOp(this)">Orange</button><button type="button" class="op-btn mvola" data-op="MVola" onclick="selectOp(this)">MVola</button><button type="button" class="op-btn airtel" data-op="Airtel" onclick="selectOp(this)">Airtel</button></div></div>
+<div class="form-group"><label>Hash de transaction / TxID (après envoi)</label><input type="text" id="txid" placeholder="Collez le hash de la transaction"></div>
+<button class="btn btn-primary" id="submitBtn" onclick="submitOrder()">Envoyer la demande</button>
+</div>
+</div>
+<div id="admin" class="panel">
+<div id="adminLogin" class="admin-login card">
+<h2>🔒 Accès Admin</h2>
+<div class="form-group"><label>Mot de passe</label><input type="password" id="adminPass" placeholder="Entrez le mot de passe" onkeydown="if(event.key==='Enter')checkAdmin()"></div>
+<button class="btn btn-primary" onclick="checkAdmin()">Entrer</button>
+<p style="margin-top:12px;font-size:.8rem;color:var(--muted);text-align:center">Mot de passe par défaut : <strong>admin123</strong></p>
+</div>
+<div id="adminContent" style="display:none">
+<div class="stats">
+<div class="stat-card"><div class="num" id="statTotal">0</div><div class="txt">Total</div></div>
+<div class="stat-card"><div class="num" id="statPending">0</div><div class="txt">En attente</div></div>
+<div class="stat-card"><div class="num" id="statDone">0</div><div class="txt">Terminées</div></div>
+</div>
+<div class="card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+<h2 style="margin:0">📋 Demandes reçues</h2>
+<button class="btn btn-secondary" style="width:auto;padding:8px 14px;font-size:.85rem" onclick="loadOrders()">Rafraîchir</button>
+</div>
+<div id="ordersList" class="orders-list"></div>
+</div>
+<button class="btn btn-secondary" style="margin-top:12px" onclick="logoutAdmin()">Déconnexion</button>
+</div>
+</div>
+<footer>Fichier unique • Données stockées localement dans le navigateur</footer>
+</div>
+<script>
+const RATE=4100,PRICES={USDT:1,USDC:1,BNB:600,BTC:90000};let selectedOperator=null;
+function showTab(n){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.getElementById(n).classList.add('active');document.querySelector(`.tab-btn[onclick="showTab('${n}')"]`).classList.add('active');if(n==='admin'){const u=sessionStorage.getItem('adminUnlocked')==='1';document.getElementById('adminLogin').style.display=u?'none':'block';document.getElementById('adminContent').style.display=u?'block':'none';if(u)loadOrders()}}
+function updateNetworks(){const c=document.getElementById('crypto').value,n=document.getElementById('network');n.innerHTML='';let o=[];if(c==='USDT'||c==='USDC')o=[{v:'TRX',t:'TRX (Tron)'},{v:'BNB',t:'BNB (BSC)'},{v:'ETH',t:'ETH (Ethereum)'}];else if(c==='BNB')o=[{v:'BNB',t:'BNB (BSC)'}];else if(c==='BTC')o=[{v:'BTC',t:'Bitcoin (BTC)'}];o.forEach(x=>{const e=document.createElement('option');e.value=x.v;e.textContent=x.t;n.appendChild(e)})}
+function calcFromCrypto(){const qty=parseFloat(document.getElementById('amountCrypto').value)||0,c=document.getElementById('crypto').value,price=PRICES[c]||1,usd=qty*price;document.getElementById('amountUsd').value=usd>0?usd.toFixed(2)+' $':'—';document.getElementById('arAmount').textContent=Math.round(usd*RATE).toLocaleString('fr-FR')+' Ar'}
+function selectOp(b){document.querySelectorAll('.op-btn').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');selectedOperator=b.dataset.op}
+function submitOrder(){const crypto=document.getElementById('crypto').value,network=document.getElementById('network').value,qty=parseFloat(document.getElementById('amountCrypto').value),nom=document.getElementById('nom').value.trim(),telephone=document.getElementById('telephone').value.trim(),txid=document.getElementById('txid').value.trim();if(!qty||qty<=0){alert('Veuillez entrer un nombre de crypto valide.');return}if(!nom){alert('Veuillez entrer le nom du propriétaire du numéro.');return}if(!telephone){alert('Veuillez entrer le numéro de téléphone.');return}if(!selectedOperator){alert('Veuillez choisir le réseau mobile (Orange / MVola / Airtel).');return}const price=PRICES[crypto]||1,amountUsd=+(qty*price).toFixed(2),ar=Math.round(amountUsd*RATE),order={id:'CMD-'+Date.now().toString(36).toUpperCase(),date:new Date().toLocaleString('fr-FR'),crypto,network,amountUsd,amountCrypto:qty+' '+crypto,amountAr:ar,nom,telephone,operator:selectedOperator,txid:txid||'—',status:'pending'},orders=JSON.parse(localStorage.getItem('cryptoOrders')||'[]');orders.unshift(order);localStorage.setItem('cryptoOrders',JSON.stringify(orders));document.getElementById('amountCrypto').value='';document.getElementById('amountUsd').value='';document.getElementById('nom').value='';document.getElementById('telephone').value='';document.getElementById('txid').value='';document.getElementById('arAmount').textContent='0 Ar';document.querySelectorAll('.op-btn').forEach(b=>b.classList.remove('selected'));selectedOperator=null;const m=document.getElementById('successMsg');m.style.display='block';setTimeout(()=>m.style.display='none',5000);if(sessionStorage.getItem('adminUnlocked')==='1')loadOrders()}
+function checkAdmin(){if(document.getElementById('adminPass').value==='admin123'){sessionStorage.setItem('adminUnlocked','1');document.getElementById('adminLogin').style.display='none';document.getElementById('adminContent').style.display='block';loadOrders()}else alert('Mot de passe incorrect.')}
+function logoutAdmin(){sessionStorage.removeItem('adminUnlocked');document.getElementById('adminLogin').style.display='block';document.getElementById('adminContent').style.display='none';document.getElementById('adminPass').value=''}
+function loadOrders(){const orders=JSON.parse(localStorage.getItem('cryptoOrders')||'[]'),list=document.getElementById('ordersList');document.getElementById('statTotal').textContent=orders.length;document.getElementById('statPending').textContent=orders.filter(o=>o.status==='pending').length;document.getElementById('statDone').textContent=orders.filter(o=>o.status==='done').length;if(!orders.length){list.innerHTML='<div class="empty">Aucune demande pour le moment.</div>';return}list.innerHTML=orders.map(o=>`<div class="order-card ${o.status==='done'?'done':''}"><div class="order-header"><div><div class="order-id">${o.id} • ${o.date}</div></div><span class="badge ${o.status==='done'?'badge-done':'badge-pending'}">${o.status==='done'?'✓ Terminée':'⏳ En attente'}</span></div><div class="order-grid"><div><div class="label">Crypto envoyée</div><div class="value">${o.amountCrypto} (${o.network})</div></div><div><div class="label">Montant en $</div><div class="value">${o.amountUsd} $</div></div><div><div class="label">À recevoir</div><div class="value" style="color:#4ade80">${o.amountAr.toLocaleString('fr-FR')} Ar</div></div><div><div class="label">Réseau mobile</div><div class="value">${o.operator}</div></div><div><div class="label">Nom du numéro</div><div class="value">${o.nom}</div></div><div><div class="label">Numéro</div><div class="value">${o.telephone}</div></div><div style="grid-column:1/-1"><div class="label">TxID / Hash</div><div class="value" style="word-break:break-all;font-size:.85rem">${o.txid}</div></div></div><div class="order-actions">${o.status==='pending'?`<button class="btn btn-primary" style="width:auto;padding:8px 16px;font-size:.85rem" onclick="markDone('${o.id}')">Marquer comme payé</button>`:''}<button class="btn btn-danger" onclick="deleteOrder('${o.id}')">Supprimer</button></div></div>`).join('')}
+function markDone(id){const orders=JSON.parse(localStorage.getItem('cryptoOrders')||'[]'),o=orders.find(x=>x.id===id);if(o){o.status='done';localStorage.setItem('cryptoOrders',JSON.stringify(orders));loadOrders()}}
+function deleteOrder(id){if(!confirm('Supprimer cette demande ?'))return;let orders=JSON.parse(localStorage.getItem('cryptoOrders')||'[]');orders=orders.filter(o=>o.id!==id);localStorage.setItem('cryptoOrders',JSON.stringify(orders));loadOrders()}
+updateNetworks();
+</script>
+</body>
+</html>
